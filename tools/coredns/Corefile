@@ -1,0 +1,14 @@
+.:53 {
+    bind {$LAN_IP}
+    root ./.local/dns
+
+    errors
+    log
+
+    hosts ./hosts.txt {
+        ttl {$DNS_TTL}
+        fallthrough
+    }
+
+    forward . {$DNS_FORWARDERS}
+}

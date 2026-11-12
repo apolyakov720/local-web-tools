@@ -1,0 +1,25 @@
+http://{$DOMAIN} {
+	bind {$LAN_IP}
+
+	root * ./.local/public
+	header /rootCA.crt Content-Type application/x-x509-ca-cert
+	file_server
+
+	log {
+		output stdout
+		format json
+	}
+}
+
+https://{$DOMAIN} {
+	bind {$LAN_IP}
+
+	tls ./.local/certs/{$DOMAIN}.pem ./.local/certs/{$DOMAIN}-key.pem
+
+	reverse_proxy {$APP_UPSTREAM}
+
+	log {
+		output stdout
+		format json
+	}
+}
